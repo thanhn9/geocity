@@ -1,0 +1,6 @@
+geopy
+requests
+flask
+geopy
+numpy
+sphinx
