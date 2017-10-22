@@ -1,7 +1,6 @@
 
 install:
 	pip install -r requirements.txt
-	mkdir data
 
 uninstall:
 	yes | pip uninstall -r requirements.txt

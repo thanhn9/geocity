@@ -16,6 +16,8 @@ Steps:
 4. make test
 5. make run
 
+Please refer to document apidoc.docx for API info.
+
 ---------------
 
 
