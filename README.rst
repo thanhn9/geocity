@@ -16,7 +16,9 @@ Steps:
 4. make test
 5. make run
 
-Please refer to document apidoc.docx for API info.
+Please refer to document "apidoc.docx" for API info.
+                         
+For a UI to the Rest API calls, I think Postman did a good job.  Can refer to https://www.getpostman.com/.  At times, I used Python requests module and/or a browser will do, as these activities are mainly refered to the GET method.
 
 ---------------
 
