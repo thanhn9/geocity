@@ -12,7 +12,6 @@ Steps:
 --------
 1. git clone https://github.com/thanhn9/geocity.git
 2. cd geocity
-3. mkdir data ; cd data;  wget http://download.geonames.org/export/dump/cities1000.zip; unzip cities1000.zip ; cd ..
 3. make install
 4. make test
 5. make run
