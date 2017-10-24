@@ -46,7 +46,7 @@ service geocity stop
 service geocity start
 etc.
 
-Added caching, indexing to file systems (Data warehouse)
+Add caching, indexing to file systems (Data warehouse), which will ultimately improve searching/querying.
 
 
 ✨🍰✨
