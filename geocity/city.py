@@ -19,11 +19,13 @@ class City(object):
 
     def __sub__(self, cityobj):
         '''
-        Overload minus sign used as a distance method name
+        Overload minus sign used as a distance method name.  Here the distance 
+        function 'vincenty' is used to calculate the distance between pairs of 
+        geo (longitude, latitude)
         '''
         if type(cityobj) == City:
-            c1 = (float(self.longitude), float(self.latitude))
-            c2 = (float(cityobj.longitude), float(cityobj.latitude))
+            c1 = (float(self.latitude), float(self.longitude))
+            c2 = (float(cityobj.latitude), float(cityobj.longitude))
             #from geopy.distance import great_circle
             #return great_circle(c1, c2)
             return vincenty(c1, c2).miles
