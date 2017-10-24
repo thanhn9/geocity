@@ -49,4 +49,8 @@ etc.
 Add caching, indexing to file systems (Data warehouse), which will ultimately improve searching/querying.
 
 
+Removed:
+--------
+numpy was intended for rigorous numerical computation, but it's not needed for now.
+
 ✨🍰✨
