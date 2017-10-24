@@ -6,6 +6,7 @@ from flask import Flask
 from flask import request
 import re
 import json
+import bisect
 
 app = Flask(__name__)
 
@@ -47,6 +48,7 @@ def proximity(cityid, k, country_code=None):
     if k <= 0:
         return json.dumps(None)
     result = {}
+    closest = []
     if cityid not in citydata.result:
         return json.dumps(None)
 
@@ -61,14 +63,19 @@ def proximity(cityid, k, country_code=None):
         distant = cityobj1 - cityobj
         if distant not in result:
             result[distant] = [cid]
+            bisect.insort(closest, distant)
         else:
             result[distant].append(cid)
-    closest  = sorted(result.keys())
     closest_result = []
     i = 0
-    for _, c in enumerate(closest):
-        for r in result[c]:
-            closest_result.append({'geonameid': r, 'distance(miles)': c})
+    for d in closest:
+        for r in result[d]:
+            info = citydata.result[r]
+            closest_result.append({
+                'geonameid': r, 
+                'country_code': info.country_code, 
+                'cityname': info.name, 
+                'distance(miles)': d})
             i += 1
             if i >= k:
                 return json.dumps(closest_result)
