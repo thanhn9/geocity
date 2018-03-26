@@ -1,6 +1,6 @@
 
 from geopy.distance import vincenty
-import data
+from geocity import data
 
 class City(object):
     '''
@@ -12,10 +12,10 @@ class City(object):
             setattr(self, i, self.datadict[i])
 
     def display(self):
-        print "******Cityid:", self.geonameid, "****"
+        print("******Cityid:", self.geonameid, "****")
         for attribute, _ in data.HEADER:
             value = getattr(self, attribute)
-            print '    ', attribute, ':', value 
+            print('    ', attribute, ':', value )
 
     def __sub__(self, cityobj):
         '''
@@ -46,10 +46,10 @@ if __name__ == '__main__':
     # computing distance
     d1 = c1-c2
     d2 = c2-c1
-    print 'distance c1-c2', d1
-    print 'distance c2-c1', d2
+    print('distance c1-c2', d1)
+    print('distance c2-c1', d2)
     d3 = c1-c1
-    print 'distance c1-c1', d3
+    print('distance c1-c1', d3)
 
-    print d1 > d3, "should be true"
-    print d1 == d2, "should be true"
+    print(d1 > d3, "should be true")
+    print(d1 == d2, "should be true")

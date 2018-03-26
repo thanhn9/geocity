@@ -1,6 +1,7 @@
 
 import sys
-sys.path.insert(0,'../geocity')
+#sys.path.insert(0,'../geocity')
+#sys.path.insert(0,'/Users/thanguye/proj/geocity')
 
 from flask import Flask
 from flask import request

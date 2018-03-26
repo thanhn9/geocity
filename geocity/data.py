@@ -1,7 +1,9 @@
 
 import re
 import codecs
-import city
+from geocity import city
+
+from whoosh import fields, index, qparser
 
 __doc__ = '''
 The main 'geoname' table has the following fields :
@@ -141,8 +143,8 @@ class CityData(object):
             # self._checkdata_item_count()
             #
             if len(data_items) != header_length:
-                print "data item line number:", i,  data_items
-                print len(data_items), '=?', header_length
+                print("data item line number:", i,  data_items)
+                print(len(data_items), '=?', header_length)
                 raise ValueError('Data item count mismatched')
 
             #
@@ -162,10 +164,8 @@ class CityData(object):
         if geonameid in self.result:
             c = self.result[geonameid]
             c.display()
-            #for key, value in r.items():
-            #    print '  ', key,":",  value.encode('utf-8')
         else:
-            print '*geonameid key', geonameid, 'does not exist'
+            print('*geonameid key', geonameid, 'does not exist')
 
     def _displayall(self):
         for k in self.result.keys():
@@ -177,9 +177,44 @@ class CityData(object):
         '''
         return self.result.get(geonameid)
 
+    def _indexing(self):
+        schema = fields.Schema(
+                geonameid=fields.NUMERIC(stored=True),
+                neighbor=fields.NUMERIC(stored=True),
+                country=fields.TEXT(stored=True),
+                distance=fields.NUMERIC(stored=True, sortable=True))
+
+        ix = index.create_in('indexdir', schema)
+        with ix.writer(procs=8, limitmb=1024, multisegment=True) as w:
+            for i in self.result:
+                print(i)
+                obj = self.result[i]
+                for j in self.result:
+                    obj1 = self.result[j]
+                    if i != j:
+                        w.add_document(geonameid=int(i), neighbor=int(j), 
+                                country=obj1.country_code, distance=obj-obj1)
+
+    def _search(self, query, limit=None):
+        ix = index.open_dir('indexdir')
+        with ix.searcher() as s:
+            #if country:
+            #    qp = qparser.MultifieldParsser(['geonameid', 'country'], ix.schema)
+            #else:
+            qp = qparser.QueryParser('geonameid', ix.schema)
+            q  = qp.parse(query)
+            results = s.search(q, sortedby='distance', limit=limit)
+            print(results)
+            for hit in results:
+                print(hit)
 
 
 if __name__ == '__main__':
     citydata = CityData()
     #citydata._displayall()
     citydata._display(geonameid='2983268')
+    #citydata._indexing()
+    #citydata._search('3186155')
+    #citydata._search('*155')
+    citydata._search('geonameid:912226 AND country:ZW', limit=5)
+    citydata._search('geonameid:912226', limit=5)
